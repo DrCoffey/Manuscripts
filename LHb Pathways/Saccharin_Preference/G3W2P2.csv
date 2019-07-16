@@ -1,0 +1,28 @@
+,Activity Wheel Software from Lafayette Instrument Company.
+,Version 10.2.2966.20953
+,Experiment Setup:
+,Connected Hardware:
+,,USB Interface REV 1 [1]
+,     Experiment Name: SaccharinPrefG3W2
+,     Experiment Length: 1 Hour
+,     Download Interval(Active Cycle): 30 Seconds
+,     Date Format: M/d/yyyy
+,     Time Format: H:mm:ss
+,     Start Time: 1/2/2018 12:34:56
+,     Stop Time: ~1/2/2018 13:34:56
+
+
+Interface/Port, 1-1, 1-2, 1-3, 1-4, 1-5, 1-6, 1-7, 1-8, 1-9, 1-10, 1-11, 1-12,
+Counter/Animal ID, Di13_S, Di13_H, Di14_S, Di14_H, Vi15_S, Vi15_H, Vi16_H, Vi16_S, Ri13_H, Ri13_S, Ri14_H, Ri14_S,
+Cage Type,Rat,Rat,Rat,Rat,Rat,Rat,Rat,Rat,Rat,Rat,Rat,Rat,
+
+
+ 1/2/2018 12:34:57
+Interval Count,-,-,-,-,-,-,-,-,-,-,-,-,
+Total Counts,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,
+
+ 12:35:06
+Interval Count,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,
+Total Counts,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,
+
+,<User stopped experiment at 1/2/2018 12:35:06 PM>

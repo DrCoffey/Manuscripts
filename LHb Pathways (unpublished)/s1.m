@@ -40,6 +40,7 @@ g.set_order_options('x',[{'Hit'} {'Miss'}],'color',[{'Vehicle'} {'CNO'}])
 g.axe_property('TickDir','out','ylim',[0 80],'LineWidth',1.5,'FontSize',12);
 g.draw
 
+fos2=fos2(fos2.Histo=='Hit',:);
 fos2.Treatment=removecats(fos2.Treatment);
 lmeFosVTA=anova(fitlme(fos2,'Fos ~ Treatment','DummyVarCoding','effects'));
 

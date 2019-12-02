@@ -1,7 +1,7 @@
 %% Make every figure related to aim 2
 close all
 clear all
-FigureFolder = 'Z:\Neumaier Lab\LHb Grant\Aim 2\Figures\Newest Figures';
+FigureFolder = '.\raw figures';
 
 % Misses
 misses = [{'Vi9'} {'Di7'} {'Di10'} {'Ri11'} {'Vi16'} {'Di11'} {'Di12'} {'Di13'} {'Di14'},...
@@ -9,13 +9,12 @@ misses = [{'Vi9'} {'Di7'} {'Di10'} {'Ri11'} {'Vi16'} {'Di11'} {'Di12'} {'Di13'} 
 
 %% Get Lickometer Data
 files = [];
-folder= 'C:\Users\Kevin\Desktop\LHb Pathways\Saccharin_Preference';
+folder= '.\Saccharin_Preference';
 files = [files; dir([folder '\*.csv'])];
 lickometer = get_licker_data2(files,misses);
 lickometer = lickometer(lickometer.S < 235,:); % exclude rows where counting up for whole interval
 lickometer = lickometer(lickometer.H < 235,:); % exclude rows where counting up for whole interval
 lickometer = lickometer(lickometer.ratID ~= 'Vi13',:); % Broken Lickometer Counter
-
 
 %% Calculate Preference and Group
 func = @(h,s,IntervalNumber) deal(sum(h),sum(s),sum(h>10),sum(s>10),{IntervalNumber},{s});
@@ -30,14 +29,14 @@ t.condition = removecats(t.condition);
 t.condition = reordercats(t.condition,{'P1' 'P2' 'P3' 'P4' 'V' 'C' 'ROV' 'ROC'});
 t.dreadd = categorical(contains(cellstr(t.ratID),'i'),[1 0],[{'hM4Di'} {'hM3Dq'}]);
 t.RO = categorical(t.condition == 'ROV' | t.condition == 'ROC',[1 0],[{'Reward Omission'} {'Saccharin'}]);
-t=t(t.GroupCount>115,:);
+t=t(t.GroupCount>100,:);
 
 %% Get Open Field Data
-DataFolder= 'C:\Users\Kevin\Desktop\LHb Pathways\Open_Field\G2\';
+DataFolder= '.\Open_Field\G2\';
 files = dir([DataFolder '\*.xlsx']);
-DataFolder= 'C:\Users\Kevin\Desktop\LHb Pathways\Open_Field\G3\';
+DataFolder= '.\Open_Field\G3\';
 files = [files; dir([DataFolder '\*.xlsx'])];
-DataFolder= 'C:\Users\Kevin\Desktop\LHb Pathways\Open_Field\G4\';
+DataFolder= '.\Open_Field\G4\';
 files = [files; dir([DataFolder '\*.xlsx'])];
 RawData = get_openfield_data(files);
 RawData.CenterDist = vecnorm([RawData.XCenter, RawData.YCenter],2,2);
@@ -50,9 +49,8 @@ a.dreadd = categorical(contains(cellstr(a.ratID),'i'),[1 0],[{'hM4Di'} {'hM3Dq'}
 a{a.region == 'DRn',{'region'}} = categorical({'DRN'});
 
 %% Make Figures
-
 close all
-folder = 'C:\Users\Kevin\Desktop\LHb Pathways\raw figures\';
-saccplot2(a,t,'licks',folder)
-saccplot2(a,t,'openfield',folder)
+folder = '.\raw figures\';
+saccplot2(a,t,'licks',folder);
+saccplot2(a,t,'openfield',folder);
 close all

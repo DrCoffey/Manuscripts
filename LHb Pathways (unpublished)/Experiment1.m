@@ -5,8 +5,7 @@ close all;
 clear all;
 
 %% Directory For Data & Import
-D=uigetdir('C:\Users\Kevin\Desktop\LHb Pathways\hm4di FST data');
-cd(D); % Change to directory
+cd('.\hm4di FST data'); % Change to directory
 fst_files=dir('*FST*'); %find FST data files
 
 % Create column headers for the master array and blank master array
@@ -125,7 +124,6 @@ RMTg_idx=All_Data(:,4)==3;
 RMTg_Data=All_Data(RMTg_idx,:);
 
 %% Data Formatting For GRAMM Figures
-
 % Inactivity VS Swimming Vs Climing
 % Distance per 1 second
 % CNO Animals
@@ -133,7 +131,6 @@ HM4Di_FST.Time=[];
 HM4Di_FST.Treatment={};
 HM4Di_FST.Behavior={};
 HM4Di_FST.Region={};
-
 HM4Di_FST2.Time=[];
 HM4Di_FST2.Treatment={};
 HM4Di_FST2.Session=[];
@@ -216,10 +213,10 @@ HM4Di_FST.Behavior=categorical(HM4Di_FST.Behavior);
 g=gramm('x',HM4Di_FST.Behavior,'y',HM4Di_FST.Time,'color',HM4Di_FST.Treatment,'subset',HM4Di_FST.Behavior=='Immobility');
 g.facet_grid([],HM4Di_FST.Region);
 g.stat_violin('normalization','width','dodge',1,'fill','transparent')
-g.geom_jitter('width',.1,'dodge',1);
-g.stat_summary('geom',{'black_errorbar'},'type','sem','dodge',1);
+g.geom_jitter('width',.1,'dodge',1,'alpha',.5);
+g.stat_summary('geom',{'black_errorbar'},'width',0,'type','sem','dodge',1);
 g.axe_property('LineWidth',1.5,'FontSize',12);
-g.axe_property('YLim',[0 125],'tickdir','out');
+g.axe_property('YLim',[0 150],'tickdir','out');
 g.set_order_options('x',{'Immobility' 'Swimming' 'Climbing'},'color',{'Vehicle' 'CNO'},'column',{'DRN' 'VTA' 'RMTg' 'Miss'}); 
 g.set_names('column',[],'x',[],'y','Time (s)','color',' ');
 g.set_text_options('base_size',14,'interpreter','none');
@@ -237,10 +234,9 @@ g.results.geom_jitter_handle(i).MarkerEdgeColor=[1.00,0.37,0.41];
 g.results.geom_jitter_handle(i).MarkerFaceColor=[1.00,0.9,0.9];
 end
 
-cd('C:\Users\Kevin\Desktop\LHb Pathways\raw figures');
+cd('..\raw figures');
 g.export('file_name','HM4Di_FST','file_type','png');
 close all
-cd(D);
 
 %% Set Up table for stats
 stat=table(HM4Di_FST.Region,HM4Di_FST.Treatment,HM4Di_FST.Behavior,HM4Di_FST.Time);
@@ -258,10 +254,28 @@ lmeVTA = anova(fitlme(stat(stat.Region=='VTA',:),'Time ~ Treatment','DummyVarCod
 lmeRMTG = anova(fitlme(stat(stat.Region=='RMTg',:),'Time ~ Treatment','DummyVarCoding','effects'));
 lmeMiss = anova(fitlme(stat(stat.Region=='Miss',:),'Time ~ Treatment','DummyVarCoding','effects'));
 
-cd('C:\Users\Kevin\Desktop\LHb Pathways\stats');
-save('Fig2abcd','lmeDRN','lmeVTA','lmeRMTG','lmeMiss','lmeAll','statarray');
+cd('..\');
+% Sample size power analysis for review.
+mD=mean(stat{stat.Region=='DRN' & stat.Treatment=='Vehicle',4});
+sD=std(stat{stat.Region=='DRN' & stat.Treatment=='Vehicle',4});
+mDCNO=mean(stat{stat.Region=='DRN' & stat.Treatment=='CNO',4});
+nDRN = sampsizepwr('t',[mD sD],mDCNO,.9,[]);
+
+mR=mean(stat{stat.Region=='RMTg' & stat.Treatment=='Vehicle',4});
+sR=std(stat{stat.Region=='RTMg' & stat.Treatment=='Vehicle',4});
+mRCNO=mean(stat{stat.Region=='RMTg' & stat.Treatment=='CNO',4});
+nRMTG = sampsizepwr('t',[mD sD],mDCNO,.9,[]);
+
+% Effect Size
+dDRN = computeCohen_d(stat{stat.Region=='DRN' & stat.Treatment=='Vehicle',4},stat{stat.Region=='DRN' & stat.Treatment=='CNO',4}, 'independent');
+dRMTG = computeCohen_d(stat{stat.Region=='RMTg' & stat.Treatment=='Vehicle',4},stat{stat.Region=='RMTg' & stat.Treatment=='CNO',4}, 'independent');
+dVTA = computeCohen_d(stat{stat.Region=='VTA' & stat.Treatment=='Vehicle',4},stat{stat.Region=='VTA' & stat.Treatment=='CNO',4}, 'independent');
+dMiss = computeCohen_d(stat{stat.Region=='Miss' & stat.Treatment=='Vehicle',4},stat{stat.Region=='Miss' & stat.Treatment=='CNO',4}, 'independent');
+
+cd('.\stats');
+save('Fig2abcd','lmeDRN','dDRN','lmeVTA','dVTA','lmeRMTG','dRMTG','lmeMiss','dMiss','lmeAll','statarray');
 close all
-cd(D);
+cd('..\')
 
 % Plotting FST Behavior with GRAMM
 g=gramm('x',HM4Di_FST2.Session,'y',HM4Di_FST2.Time,'color',HM4Di_FST2.Treatment);
@@ -277,17 +291,14 @@ g.set_color_options('map','lch','hue_range',[25 385]+180);
 
 figure('Position',[1 1 750 300]);
 g.draw();
-cd('C:\Users\Kevin\Desktop\LHb Pathways\raw figures');
+cd('.\raw figures');
 g.export('file_name','HM4Di_FST_Time','file_type','png');
-close all
-cd(D);
 close all
 
 %% FOR HM3Dq
 
 %% Directory For Data & Import
-D=uigetdir('C:\Users\Kevin\Desktop\LHb Pathways\hm3dq FST data', 'Choose Directory');
-cd(D); % Change to directory
+cd('..\hm3dq FST data'); % Change to directory
 fst_files=dir('*FST*'); %find FST data files
 
 % Create column headers for the master array and blank master array
@@ -414,7 +425,6 @@ HM4Di_FST.Time=[];
 HM4Di_FST.Treatment={};
 HM4Di_FST.Behavior={};
 HM4Di_FST.Region={};
-
 HM4Di_FST2.Time=[];
 HM4Di_FST2.Treatment={};
 HM4Di_FST2.Session=[];
@@ -498,7 +508,7 @@ g=gramm('x',HM4Di_FST.Behavior,'y',HM4Di_FST.Time,'color',HM4Di_FST.Treatment,'s
 g.facet_grid([],HM4Di_FST.Region);
 g.stat_violin('normalization','width','dodge',1,'fill','transparent')
 g.geom_jitter('width',.1,'dodge',1);
-g.stat_summary('geom',{'black_errorbar'},'type','sem','dodge',1);
+g.stat_summary('geom',{'black_errorbar'},'width',0,'type','sem','dodge',1);
 g.axe_property('LineWidth',1.5,'FontSize',12);
 g.axe_property('YLim',[0 125],'tickdir','out');
 g.set_order_options('x',{'Immobility' 'Swimming' 'Climbing'},'color',{'Vehicle' 'CNO'},'column',{'DRN' 'VTA' 'RMTg' 'Miss'}); 
@@ -520,10 +530,9 @@ g.results.geom_jitter_handle(i).MarkerEdgeColor=[0,0.735174873139987,0.564534786
 g.results.geom_jitter_handle(i).MarkerFaceColor=[.9,1,.9];
 end
 
-cd('C:\Users\Kevin\Desktop\LHb Pathways\raw figures');
+cd('..\raw figures');
 g.export('file_name','HM3dq_FST','file_type','png');
 close all
-cd(D);
 
 %% Set Up table for stats
 stat=table(HM4Di_FST.Region,HM4Di_FST.Treatment,HM4Di_FST.Behavior,HM4Di_FST.Time);
@@ -532,11 +541,14 @@ stat.Var2=categorical(stat.Var2);
 stat=stat(stat.Var3=='Immobility',:);
 stat.Properties.VariableNames = {'Region' 'Treatment' 'Behavior' 'Time'};
 
-cd('C:\Users\Kevin\Desktop\LHb Pathways\stats');
+cd('..\');
+dDRNq = computeCohen_d(stat{stat.Region=='DRN' & stat.Treatment=='Vehicle',4},stat{stat.Region=='DRN' & stat.Treatment=='CNO',4}, 'independent');
+
+cd('.\stats');
+% Effect Size
 lmeDRNq = anova(fitlme(stat(stat.Region=='DRN',:),'Time ~ Treatment','DummyVarCoding','effects'));
-save('Fig5a','lmeDRNq');
+save('Fig5a','lmeDRNq','dDRNq');
 close all
-cd(D);
 
 % Plotting FST Behavior with GRAMM
 g=gramm('x',HM4Di_FST2.Session,'y',HM4Di_FST2.Time,'color',HM4Di_FST2.Treatment);
@@ -552,8 +564,6 @@ g.set_color_options('map','lch','hue_range',[0 350]);
 
 figure('Position',[1 1 450 300]);
 g.draw();
-cd('C:\Users\Kevin\Desktop\LHb Pathways\raw figures');
+cd('..\raw figures');
 g.export('file_name','HM3dq_FST_Time','file_type','png');
-close all
-cd(D);
 close all

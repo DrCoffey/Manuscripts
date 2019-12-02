@@ -2,8 +2,8 @@
 
 clear all;
 
-load("C:\Users\Kevin\Documents\GitHub\Manuscripts\LHb Pathways (unpublished)\Fos\fos1.mat");
-load("C:\Users\Kevin\Documents\GitHub\Manuscripts\LHb Pathways (unpublished)\Fos\fos2.mat");
+load(".\Fos\fos1.mat");
+load(".\Fos\fos2.mat");
 
 
 % Non-intersectional
@@ -23,9 +23,14 @@ g.draw
 % Fos Stats
 lmeFos = anova(fitlme(fos1,'Fos ~ Treatment','DummyVarCoding','effects'));
 
-export_fig('C:\Users\Kevin\Documents\GitHub\Manuscripts\LHb Pathways (unpublished)\Fos\Fos.png','-m5');
-cd('C:\Users\Kevin\Documents\GitHub\Manuscripts\LHb Pathways (unpublished)\Fos\');
+% Effect Size
+dFos = computeCohen_d(fos1{1:4,2},fos1{5:8,2}, 'independent');
+
+export_fig('.\Fos\Fos.png','-m5');
+cd('.\Fos');
 save('lmeFos');
+save('dFos');
+cd('..\');
 
 % LHb to VTA intersectional 
 clear g
@@ -44,6 +49,11 @@ fos2=fos2(fos2.Histo=='Hit',:);
 fos2.Treatment=removecats(fos2.Treatment);
 lmeFosVTA=anova(fitlme(fos2,'Fos ~ Treatment','DummyVarCoding','effects'));
 
-export_fig('C:\Users\Kevin\Documents\GitHub\Manuscripts\LHb Pathways (unpublished)\Fos\FosVTA.png','-m5');
-cd('C:\Users\Kevin\Documents\GitHub\Manuscripts\LHb Pathways (unpublished)\Fos\');
+% Effect Size
+dFosVTA = computeCohen_d(fos2{[1 3 7],3},fos2{[2 4 5 6],3}, 'independent');
+
+
+export_fig('.\Fos\FosVTA.png','-m5');
+cd('.\Fos\');
 save('lmeFosVTA');
+save('dFosVTA');

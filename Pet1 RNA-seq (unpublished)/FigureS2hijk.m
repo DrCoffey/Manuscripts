@@ -24,7 +24,7 @@ cmap = pa_LCH2RGB(LHC);
 % Plotting Defferntial Expression 
 f1=figure('color','w','position',[100 100 700 600]);
 title('Ribotag^+ IP vs Ribotag^+ IN')
-% set(gca,'Color','white')
+axis off
 ha = tight_subplot(2,2,[.075 .075],[.12 .12],[.12 .12]) ;
 set(ha,'tickdir','out');
 
@@ -50,7 +50,7 @@ scatter(log2(tmp.data(idx,1)),tmp.data(idx,2),6,tmp.data(idx,6),'filled','o','ma
 
 colormap(flipud(cmap))
 caxis([0 .1])
-ylim([-3 6]);
+ylim([-4 8]);
 xlim([-5 15]);
 %h = colorbar;
 %set(get(h,'title'),'string','(FDR)');
@@ -60,14 +60,14 @@ if l==1
 yticks([-2 0 2 4 6])
 yticklabels({'-2','0','2','4','6'})
 ylabel('log_2(Fold Change)');
-text(-4,6,'Stressed Females','FontSize',12)
+text(-4,8,'Stressed Females','FontSize',12)
 % Create xlabel
 %xlabel('log2(Mean TPM)','FontWeight','bold');
 end
 
 
 if l==2
-text(-4,6,'Stressed Males','FontSize',12)
+text(-4,8,'Stressed Males','FontSize',12)
 end
 
 if l==3
@@ -78,7 +78,7 @@ xticklabels({'-5','0','5','10','15'});
 ylabel('log_2(Fold Change)');
 % Create xlabel
 xlabel('log_2(TPM)');
-text(-4,6,'Unstressed Females','FontSize',12)
+text(-4,8,'Unstressed Females','FontSize',12)
 
 end
 
@@ -88,7 +88,7 @@ if l==4
 xticks([-5 0 5 10 15])
 xticklabels({'-5','0','5','10','15'});
 xlabel('log_2(TPM)');
-text(-4,6,'Unstressed Males','FontSize',12)
+text(-4,8,'Unstressed Males','FontSize',12)
 end
 
 clear G1_name G2_name

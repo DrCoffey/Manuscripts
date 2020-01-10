@@ -14,8 +14,6 @@ t.Group=categorical(t.Group);
 t.Genotype=categorical(t.Genotype);
 t.Treatment=categorical(t.Treatment);
 
-
-
 g=gramm('x',t.Genotype,'y',t.Distance,'color',t.Treatment,'Subset',t.Group=='Morphine Naloxone');
 g.stat_violin('normalization','width','dodge',1,'fill','transparent')
 g.geom_jitter('width',.1,'dodge',1,'alpha',.5);
@@ -55,9 +53,15 @@ g.set_order_options('color',{'Vehicle','CNO'});
 g.draw();
 g.export('file_name','ImmobilityMN','file_type','png');
 
-t=t(t.Group=='Morphine Naloxone',:);
-[h,p,ci,stats] = ttest2(t{t.Genotype=='HM4Di' & t.Treatment=='CNO',8},t{t.Genotype=='HM4Di' & t.Treatment=='Vehicle',8})
-[h,p,ci,stats] = ttest2(t{t.Genotype=='HM4Di' & t.Treatment=='CNO',12},t{t.Genotype=='HM4Di' & t.Treatment=='Vehicle',12})
-[h,p,ci,stats] = ttest2(t{t.Genotype=='HM4Di' & t.Treatment=='CNO',14},t{t.Genotype=='HM4Di' & t.Treatment=='Vehicle',14})
+t2=t(t.Group=='Morphine Naloxone',:);
+[h,H_Dist_p,ci,H_Dist_stats] = ttest2(t2{t2.Genotype=='HM4Di' & t2.Treatment=='CNO',8},t2{t2.Genotype=='HM4Di' & t2.Treatment=='Vehicle',8})
+[h,H_Cont_p,ci,H_Cont_stats] = ttest2(t2{t2.Genotype=='HM4Di' & t2.Treatment=='CNO',12},t2{t2.Genotype=='HM4Di' & t2.Treatment=='Vehicle',12})
+[h,H_Imm_p,ci,H_Imm_stats] = ttest2(t2{t2.Genotype=='HM4Di' & t2.Treatment=='CNO',14},t2{t2.Genotype=='HM4Di' & t2.Treatment=='Vehicle',14})
 
-save('Figure_8abc_stats.m','Dist_c','Contract_c','Immobile_c');
+[h,R_Dist_p,ci,R_Dist_stats] = ttest2(t2{t2.Genotype=='HM4Di' & t2.Treatment=='CNO',8},t2{t2.Genotype=='Ribotag' & t2.Treatment=='CNO',8})
+[h,R_Cont_p,ci,R_Cont_stats] = ttest2(t2{t2.Genotype=='HM4Di' & t2.Treatment=='CNO',12},t2{t2.Genotype=='Ribotag' & t2.Treatment=='CNO',12})
+[h,R_Imm_p,ci,R_Imm_stats] = ttest2(t2{t2.Genotype=='HM4Di' & t2.Treatment=='CNO',14},t2{t2.Genotype=='Ribotag' & t2.Treatment=='CNO',14})
+
+save('Figure_8abc_Ribo_stats.m','H_Dist_p','H_Cont_p','H_Imm_p','H_Dist_stats',...
+    'H_Cont_stats','H_Imm_stats','R_Dist_p','R_Cont_p','R_Imm_p','R_Dist_stats',...
+    'R_Cont_stats','R_Imm_stats');

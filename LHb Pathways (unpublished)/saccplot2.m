@@ -71,7 +71,16 @@ switch choice
             g(1,4).results.geom_jitter_handle(i).MarkerFaceColor=[1.00,0.9,0.9];
         end
         
-        % Stats Figure 3bfjn Fig5d
+        % Stats Figure 3bfjn
+        idx=(t.condition=='P1'| t.condition=='P2' | t.condition=='P3' | t.condition=='P4') & t.dreadd=='hM4Di';
+        z=t(idx,:);
+        z.treatment=removecats(z.treatment);
+        z.condition=removecats(z.condition);
+        z.ratID=removecats(z.ratID);
+        lme2 = fitlme(z,'S_licks ~ region*condition','DummyVarCoding','effects');
+        lmePre=anova(lme2);
+        
+        % Stats Figure 3chko Fig5d
         idx=(t.condition=='C'| t.condition=='V') & t.dreadd=='hM4Di';
         z=t(idx,:);
         z.treatment=removecats(z.treatment);
@@ -116,6 +125,7 @@ switch choice
             cd('.\raw figures');
             export_fig('saccharin_i.png','-m5');
             cd('..\stats');
+            save('Fig3bfjn','lmePre');
             save('Fig3cgko','lmeDRN','dDRN','lmeVTA','dVTA','lmeRMTG','dRMTG','lmeMiss','dMiss','lmeAll','statarray');
             save('Fig5d','lmeDRNq','dDRNq');
             cd('..\');

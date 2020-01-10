@@ -215,3 +215,62 @@ l(2).Visible="off";
 
 export_fig('Morphine v Withdrawal Input.png', '-m5'); % Save the Figure
 
+%% IP Vs Input Overlap
+
+IP_Morphine=importdata('DESeq2_8_Morphine Vehicle_Saline Vehicle_IP_Adj.xlsx');
+IP_Morphine.textdata=IP_Morphine.textdata(2:end)';
+IPM_WALD=IP_Morphine.data(IP_Morphine.data(:,6)<.1,4);
+sum(IPM_WALD>0)
+sum(IPM_WALD<0)
+
+IN_Morphine=importdata('DESeq2_5_Morphine Vehicle_Saline Vehicle_Input.xlsx');
+IN_Morphine.textdata=IN_Morphine.textdata(2:end)';
+INM_WALD=IN_Morphine.data(IN_Morphine.data(:,6)<.1,4);
+sum(INM_WALD>0)
+sum(INM_WALD<0)
+
+IP_Withdrawal=importdata('DESeq2_9_Morphine Naloxone_Morphine Vehicle_IP_Adj.xlsx');
+IP_Withdrawal.textdata=IP_Withdrawal.textdata(2:end)';
+IPW_WALD=IP_Withdrawal.data(IP_Withdrawal.data(:,6)<.1,4);
+sum(IPW_WALD>0)
+sum(IPW_WALD<0)
+
+IN_Withdrawal=importdata('DESeq2_6_Morphine Naloxone_Morphine Vehicle_Input.xlsx');
+IN_Withdrawal.textdata=IN_Withdrawal.textdata(2:end)';
+INW_WALD=IN_Withdrawal.data(IN_Withdrawal.data(:,6)<.1,4);
+sum(INW_WALD>0)
+sum(INW_WALD<0)
+
+IPM_Genes=IP_Morphine.textdata(IP_Morphine.data(:,6)<.1);
+INM_Genes=IN_Morphine.textdata(IN_Morphine.data(:,6)<.1);
+IPW_Genes=IP_Withdrawal.textdata(IP_Morphine.data(:,6)<.1);
+INW_Genes=IN_Withdrawal.textdata(IN_Morphine.data(:,6)<.1);
+
+[C,ia,ib] = intersect(IPM_Genes,INM_Genes, 'stable');
+M_Overlap=C;
+figure;
+venn([length(INM_Genes),length(IPM_Genes)],length(C),'FaceColor',{cmap(1,:),cmap(100,:)},'FaceAlpha',{1,0.6},'EdgeColor','black');
+text(-15,0,['IN:' num2str(length(INM_Genes)-length(C))],'FontSize',14,'FontWeight','bold');
+text(15,0,num2str(length(C)),'FontSize',14,'FontWeight','bold');
+text(30,0,['IP:' num2str(length(IPM_Genes)-length(C))],'FontSize',14,'FontWeight','bold');
+axis off
+[C,ia,ib] = setxor(IPM_Genes,INM_Genes);
+IPM_Unique=IPM_Genes(ia);
+INM_Unique=INM_Genes(ib);
+export_fig('Morphine IP Input Overlap.png', '-m5'); % Save the Figure
+
+[C,ia,ib] = intersect(IPW_Genes,INW_Genes, 'stable');
+W_Overlap=C;
+figure;
+venn([length(INW_Genes),length(IPW_Genes)],length(C),'FaceColor',{cmap(1,:),cmap(100,:)},'FaceAlpha',{1,0.6},'EdgeColor','black');
+text(-15,0,['IN:' num2str(length(INW_Genes)-length(C))],'FontSize',14,'FontWeight','bold');
+text(15,0,num2str(length(C)),'FontSize',14,'FontWeight','bold');
+text(30,0,['IP:' num2str(length(IPW_Genes)-length(C))],'FontSize',14,'FontWeight','bold');
+axis off
+[C,ia,ib] = setxor(IPW_Genes,INW_Genes);
+IPW_Unique=IPW_Genes(ia);
+INW_Unique=INW_Genes(ib);
+export_fig('Withdrawal IP Input Overlap.png', '-m5'); % Save the Figure
+
+save('Unique and Overlapping DEGs.mat','M_Overlap','W_Overlap','IPM_Unique','INM_Unique','IPW_Unique','INW_Unique');
+

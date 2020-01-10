@@ -44,4 +44,16 @@ g.draw();
 export_fig('Naloxone Behavior.png','-m5');
 %Some methods can be called on all objects at the same time !
 
+[p,t2,stats] = anova1(t.Distance,t.Treatment,'off');
+figure;
+[Dist_c,~,~,~] = multcompare(stats);
 
+[p,t2,stats] = anova1(t.Contracted,t.Treatment,'off');
+figure;
+[Contract_c,~,~,~] = multcompare(stats);
+
+[p,t2,stats] = anova1(t.Immobile,t.Treatment,'off');
+figure;
+[Immobile_c,~,~,~] = multcompare(stats);
+
+save('Figure_2bcd_stats.m','Dist_c','Contract_c','Immobile_c');

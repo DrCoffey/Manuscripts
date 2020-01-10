@@ -14,6 +14,7 @@ for i=3:length(d1)
     neg_prop=rna_neg/rna_t.RNA(i-2);
     tmpip.TPM=tmpip.TPM-(tmpin.TPM*neg_prop);
     tmpip.TPM(tmpip.TPM<1)=0;
+    tmpip.TPM=tmpip.TPM/sum(tmpip.TPM)*1000000;
     writetable(tmpip,fullfile(d3,d1(i).name),'FileType','text','Delimiter','tab');
 end
 
@@ -33,5 +34,6 @@ for i=3:length(d1)
     neg_prop=rna_neg/rna_t.RNA(i-2);
     tmpip.TPM=tmpip.TPM-(tmpin.TPM*neg_prop);
     tmpip.TPM(tmpip.TPM<1)=0;
+    tmpip.TPM=tmpip.TPM/sum(tmpip.TPM)*1000000;
     writetable(tmpip,fullfile(d3,d1(i).name),'FileType','text','Delimiter','tab');
 end

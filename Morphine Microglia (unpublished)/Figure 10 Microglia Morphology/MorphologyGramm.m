@@ -29,7 +29,7 @@ G = groupsummary(mt,{'Subject','Group','A1','A2'},'mean');
 
 g(1,1)=gramm('x',mt.Group,'y',mt.CellVolume,'color',mt.Group);
 g(1,2)=gramm('x',mt.Group,'y',mt.numbranchpts,'color',mt.Group);
-g(1,3)=gramm('x',mt.Group,'y',mt.numendpts,'color',mt.Group);
+g(1,3)=gramm('x',mt.Group,'y',mt.MeanTerminalBranchLength,'color',mt.Group);
 
 % Violin
 g(1,1).stat_violin('normalization','width','half',0,'dodge',0,'fill','transparent')

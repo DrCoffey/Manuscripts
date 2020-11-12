@@ -38,22 +38,26 @@ g(1,1).set_names('x','','y','Distance (cm)','color','Groups');
 g(1,2).set_names('x','','y','Contraction (s)','color','Groups');
 g(1,3).set_names('x','','y','Immobility (cms)','color','Groups');
 
+g(1,1).set_order_options('x',{'SS','SN','MS','MN'});
+g(1,2).set_order_options('x',{'SS','SN','MS','MN'});
+g(1,3).set_order_options('x',{'SS','SN','MS','MN'});
+
 figure('Position',[100 100 1200 350]);
 g.draw();
 
 export_fig('Naloxone Behavior.png','-m5');
 %Some methods can be called on all objects at the same time !
 
-[p,t2,stats] = anova1(t.Distance,t.Treatment,'off');
+[p,t2,stats] = anovan(t.Distance,{t.A1 t.A2},'model','interaction','varnames',{'Drug','Treatment'});
 figure;
-[Dist_c,~,~,~] = multcompare(stats);
+[Dist_c,~,~,~] = multcompare(stats,'Dimension',[1 2],'CType','dunn-sidak');
 
-[p,t2,stats] = anova1(t.Contracted,t.Treatment,'off');
+[p,t2,stats] = anovan(t.Contracted,{t.A1 t.A2},'model','interaction','varnames',{'Drug','Treatment'});
 figure;
-[Contract_c,~,~,~] = multcompare(stats);
+[Contract_c,~,~,~] = multcompare(stats,'Dimension',[1 2],'CType','dunn-sidak');
 
-[p,t2,stats] = anova1(t.Immobile,t.Treatment,'off');
+[p,t2,stats] = anovan(t.Immobile,{t.A1 t.A2},'model','interaction','varnames',{'Drug','Treatment'});
 figure;
-[Immobile_c,~,~,~] = multcompare(stats);
+[Immobile_c,~,~,~] = multcompare(stats,'Dimension',[1 2],'CType','dunn-sidak');
 
 save('Figure_2bcd_stats.m','Dist_c','Contract_c','Immobile_c');

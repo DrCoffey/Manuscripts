@@ -274,3 +274,49 @@ export_fig('Withdrawal IP Input Overlap.png', '-m5'); % Save the Figure
 
 save('Unique and Overlapping DEGs.mat','M_Overlap','W_Overlap','IPM_Unique','INM_Unique','IPW_Unique','INW_Unique');
 
+%% IP TSNE
+desT=readtable("..\Figure 6-8 WGCNA\Data Sheets\GeneTableIP_Minus.csv");
+
+Group=categorical({'SS','SS','SS','SS','SN','SN','SN','SN','SN','MS','MS','MS','MS','MN','MN','MN','MN'})';
+
+GeneTableVariance=desT(var(desT{:,2:end}')>100,:);
+Y = tsne(GeneTableVariance{:,2:end}','Algorithm','exact','Distance','cosine','Perplexity',6);
+PC1=Y(:,1);
+PC2=Y(:,2);
+pcTable=table(Group,PC1,PC2);
+f1=figure('color','w','position',[100 100 400 300]);
+g=gramm('x',pcTable.PC1,'y',pcTable.PC2,'color',pcTable.Group)
+g.geom_point();
+g.set_names('x','TSNE1','y','TSNE2','color','Fraction')
+g.axe_property('FontSize',12,'LineWidth',1.5,'TickDir','out');
+g.draw;
+g.export('file_name','IP-Group-TSNE.png','file_type','png');
+
+for i=1:height(panel)
+    disp(i);
+    TF = matches(desT.Genes(:),panel.gene{i},'IgnoreCase',true);
+    if sum(TF)==1;
+    Count= desT{TF,2:18}';
+    Gene=repmat(categorical(desT.Genes((TF))),[17,1]);
+    CellType=repmat(categorical(panel.Celltype(i)),[17,1]);
+    if i==1
+       mt=table(Group,Gene,Count,CellType); 
+    else
+       mt=[mt;table(Group,Gene,Count,CellType)]; 
+    end
+    end
+end
+
+
+clear g
+f1=figure('color','w','position',[100 100 400 300]);
+g=gramm('x',mt.CellType,'y',(mt.Count),'color',mt.Group);
+%Boxplots
+%g.stat_violin('normalization','width','half',0,'dodge',.75,'fill','transparent')
+%g.geom_jitter('width',.1,'dodge',1,'alpha',.5);
+g.stat_summary('geom',{'point','errorbar'},'type','sem','dodge',.75);
+g.axe_property('LineWidth',1.5,'FontSize',12,'Ylim',[0 100]);
+g.set_names('x','Presumed Cell Markers','y','Normalized Count','color','Groups');
+g.set_order_options('x',{'mic','neu','oli','ast','end','opc'});
+g.draw;
+g.export('file_name','IN-Panel.png','file_type','png');

@@ -75,6 +75,8 @@ plot([0 0],[0 8],'--k');
 h.Box='off';
 xlabel('Normalized Enrichment');
 ylabel('-log(FDR)');
+set(gca,'FontSize',10,'LineWidth',1.5);
+
 
 % Find the 'line' objects
 icons = findobj(icons,'Type','line');
@@ -102,7 +104,7 @@ Y = tsne(GeneTableVariance{:,2:end}','Algorithm','exact','Distance','cosine','Pe
 PC1=Y(:,1);
 PC2=Y(:,2);
 pcTable=table(Groups,PC1,PC2);
-f1=figure('color','w','position',[100 100 280 200]);
+f1=figure('color','w','position',[100 100 400 300]);
 g=gramm('x',pcTable.PC1,'y',pcTable.PC2,'color',pcTable.Groups)
 g.geom_point();
 g.set_names('x','TSNE1','y','TSNE2','color','Fraction')

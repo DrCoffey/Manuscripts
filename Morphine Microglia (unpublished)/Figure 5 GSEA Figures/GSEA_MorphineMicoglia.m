@@ -30,7 +30,7 @@ clear all
 fig_fold='Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\Figures';
 
 
-t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP\Morphine\Morphine IP BP.xlsx")
+t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP Adjusted\Morphine\Morphine IP BP.xlsx")
 enr=t(t.NES>0,:);
 enr = sortrows(enr,8,'ascend');
 denr=t(t.NES<0,:);
@@ -87,7 +87,7 @@ clear all
 fig_fold='Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\Figures';
 
 
-t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP\Morphine\Morphine IP RT.xlsx")
+t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP Adjusted\Morphine\Morphine IP RT.xlsx")
 enr=t(t.NES>0,:);
 enr = sortrows(enr,8,'ascend');
 denr=t(t.NES<0,:);
@@ -143,7 +143,7 @@ clear all
 fig_fold='Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\Figures';
 
 
-t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP\Morphine\Morphine IP TF.xlsx")
+t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP Adjusted\Morphine\Morphine IP TF.xlsx")
 enr=t(t.NES>0,:);
 try
 enr = sortrows(enr,7,'ascend');
@@ -213,7 +213,7 @@ export_fig(fullFileName, '-m5'); % Save the Figure
 clear all
 fig_fold='Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\Figures';
 
-t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP\Withdrawal\Withdrawal IP BP.xlsx")
+t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP Adjusted\Withdrawal\Withdrawal IP BP.xlsx")
 idx=t.FDR==0;
 t.FDR(idx) = 10^-4./t.NES(idx);
 
@@ -273,7 +273,7 @@ export_fig(fullFileName, '-m5'); % Save the Figure
 clear all
 fig_fold='Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\Figures';
 
-t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP\Withdrawal\Withdrawal IP RT.xlsx")
+t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP Adjusted\Withdrawal\Withdrawal IP RT.xlsx")
 idx=t.FDR==0;
 t.FDR(idx) = 10^-4./t.NES(idx);
 
@@ -330,7 +330,7 @@ clear all
 fig_fold='Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\Figures';
 
 
-t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP\Withdrawal\Withdrawal IP TF.xlsx")
+t=readtable("Z:\Neumaier Lab\Morphine Grant\RNA Seq 2\GSEA\IP Adjusted\Withdrawal\Withdrawal IP TF.xlsx")
 idx=t.FDR==0;
 t.FDR(idx) = 10^-4./t.NES(idx);
 
